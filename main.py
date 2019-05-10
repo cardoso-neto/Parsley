@@ -5,15 +5,6 @@ from args_parser import parse_args
 from http_parser.master_parser import MasterParser
 from tools.general import create_dir, file_to_set
 
-args = parse_args()
-INPUT_FILE = args.input
-OUTPUT_DIR = args.output
-NUMBER_OF_THREADS = args.threads
-
-queue = Queue()
-create_dir(OUTPUT_DIR)
-crawl_count = 0
-
 
 def create_workers():
     for _ in range(NUMBER_OF_THREADS):
@@ -36,5 +27,16 @@ def create_jobs():
         queue.put(url)
     queue.join()
 
-create_workers()
-create_jobs()
+
+if __name__ == '__main__':
+    args = parse_args()
+    INPUT_FILE = args.input
+    OUTPUT_DIR = args.output
+    NUMBER_OF_THREADS = args.threads
+
+    queue = Queue()
+    create_dir(OUTPUT_DIR)
+    crawl_count = 0
+
+    create_workers()
+    create_jobs()
