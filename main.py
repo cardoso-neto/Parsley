@@ -3,7 +3,7 @@ from queue import Queue
 
 from args_parser import parse_args
 from http_parser.master_parser import MasterParser
-from tools.general import create_dir, file_to_set
+from tools.general import create_dir, text_file_to_set, get_url_slug_tuples
 
 
 def create_workers():
@@ -14,17 +14,21 @@ def create_workers():
 
 
 def work():
-    global crawl_count
     while True:
-        url = queue.get()
-        crawl_count += 1
-        MasterParser.parse(url, OUTPUT_DIR, str(crawl_count))
+        filename, url = queue.get()
+        MasterParser.parse(url, OUTPUT_DIR, filename)
         queue.task_done()
 
 
 def create_jobs():
-    for url in file_to_set(INPUT_FILE):
-        queue.put(url)
+    links = text_file_to_set(INPUT_FILE)
+    try:
+        filenames_urls = get_url_slug_tuples(links)
+    except NotImplementedError:
+        filenames_urls = zip(range(len(links)), links)
+
+    for filename_url in filenames_urls:
+        queue.put(filename_url)
     queue.join()
 
 
@@ -36,7 +40,6 @@ if __name__ == '__main__':
 
     queue = Queue()
     create_dir(OUTPUT_DIR)
-    crawl_count = 0
 
     create_workers()
     create_jobs()
