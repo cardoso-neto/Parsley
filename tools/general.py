@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from collections import Counter
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from slugify import slugify
 
@@ -11,7 +11,7 @@ from slugify import slugify
 @dataclass
 class ElementInfo:
     count: int = 0
-    index: list = []
+    index: list = field(default_factory=list)
 
 
 def get_repeated_elements(elements):
