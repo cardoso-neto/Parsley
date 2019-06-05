@@ -11,7 +11,7 @@ Clone this repo and install its dependencies;
 
 Run `python main.py` with no args to test it;
 
-It will download the content three URLs listed on the [sample-links.txt](https://github.com/cardoso-neto/Parsley/blob/master/sample-links.txt) file;
+It will download the content of the three URLs listed on the [sample-links.txt](https://github.com/cardoso-neto/Parsley/blob/master/sample-links.txt) file;
 
 A JSON for each URL will be saved on the `./data/` folder with a sanitized version of URL as its filename.
 
