@@ -11,7 +11,7 @@ class Tag:
         self.content = ' '.join(text.split())
 
     def add_attribute(self, key, value):
-        if str(type(value)) == "<class 'str'>":
+        if isinstance(value, str):
             if len(value) < 1:
                 return
         self.attributes[key] = value

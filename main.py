@@ -1,3 +1,4 @@
+
 from multiprocessing import Pool
 
 from args_parser import parse_args
@@ -15,14 +16,16 @@ def main(txt_file_path, num_workers):
     try:
         filenames_urls = get_url_slug_tuples(links)
     except NotImplementedError:
-        filenames_urls = zip(map(str, range(len(links))), links)
+        indices_as_strings = map(str, range(len(links)))
+        filenames_urls = zip(indices_as_strings, links)
+
     with Pool(num_workers) as p:
         p.map(download, filenames_urls)
 
 
 if __name__ == '__main__':
     args = parse_args()
-    OUTPUT_DIR = args.output
+    OUTPUT_DIR = args.output_dir
 
     create_dir(OUTPUT_DIR)
     main(args.input, args.workers)

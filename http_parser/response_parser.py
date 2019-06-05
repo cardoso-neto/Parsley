@@ -1,21 +1,26 @@
 
+from http.client import HTTPResponse
+from typing import Dict
+
 
 class ResponseParser:
 
-    def __init__(self, response):
+    def __init__(self, response: HTTPResponse):
         self.response = response
         self.headers = self.parse()
 
-    def parse(self):
+    def parse(self) -> Dict[str, str]:
         '''
-        Return a list of dictionaries comprising of all the HTML tags in the webpage.
-        The dictionary has the keys: attributes, content and name of the tags.
-        The attributes would be of the tags such as content and name whereas as the name listed above is the name of the tag.
+        Return a dict with the response headers of the page along with other metadata.
 
-        param html_string: the HTML data of the requested webpage
-        type html_string: string
+        The utility of this function is that urlopen.info() returns these information
+            as a mime tools.Message instance which isn’t as easy to use an dictionary.
+        Each item from an .info() call is split and added to a dictionary as a key value pair.
 
-        returns: list of dictionaries with all the tags
+        :param response: The response object from a urlopen call to the URL of the webpage
+        :type response: HTTPresponse object
+
+        :returns a dictionary with response headers and other meta-information depending on the webpage.
         '''
         results = {}
         header_info = str(self.response.info()).split('\n')

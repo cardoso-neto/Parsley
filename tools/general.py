@@ -1,10 +1,10 @@
 import json
 import os
-from pathlib import Path
-from collections import Counter
 from collections import defaultdict
 from dataclasses import dataclass, field
+from pathlib import Path
 
+from atomicwrites import atomic_write
 from slugify import slugify
 
 
@@ -40,8 +40,8 @@ def filenames_to_set(dir_path):
 
 
 def write_file(file_name, data):
-    with open(file_name, 'w') as f:
-        f.write(data)
+    with atomic_write(file_name, mode='w', overwrite=True) as output_file:
+        output_file.write(data)
 
 
 def text_file_to_set(file_name):
@@ -65,5 +65,5 @@ def get_url_slug_tuples(urls):
 
 
 def write_json(file_name, data):
-    with open(file_name, 'w') as f:
-        json.dump(data, f)
+    with atomic_write(file_name, mode='w', overwrite=True) as output_file:
+        output_file.write(json.dumps(data, indent=2))
